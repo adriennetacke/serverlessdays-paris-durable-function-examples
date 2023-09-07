@@ -17,14 +17,14 @@ namespace BasketOfFunctions
         {
             var parallelTasks = new List<Task<int>>();
             
-            List<string> titas = await context.CallActivityAsync<List<string>>("FindAllTitas", null);
+            List<string> helpers = await context.CallActivityAsync<List<string>>("FindAllTitasAndTitos", null);
             for (int i = 0; i < titas.Count; i++)
             {
-                Task<int> task = context.CallActivityAsync<int>("MakeLotsOfLumpia", titas[i]);
+                Task<int> task = context.CallActivityAsync<int>("MakeLotsOfLumpia", helpers[i]);
                 parallelTasks.Add(task);
             }
 
-            // Wait for all Titas to finish making Lumpia!
+            // Wait for all helpers to finish making Lumpia!
             await Task.WhenAll(parallelTasks);
 
             int allTheLumpias = parallelTasks.Sum(t => t.Result);
@@ -41,11 +41,11 @@ namespace BasketOfFunctions
             return totalLumpiaMade;
         }
 
-        [FunctionName("FindAllTitas")]
-        public static List<string> FindAllTitas([ActivityTrigger] string name, ILogger log)
+        [FunctionName("FindAllTitasAndTitos")]
+        public static List<string> FindAllTitasAndTitos([ActivityTrigger] string name, ILogger log)
         {
-            List<string> allTitas = new List<string>() { "Tita Sheryl", "Tita Angelique", "Tita MArivic", "Tita Andy" };
-            return allTitas;
+            List<string> allHelpers = new List<string>() { "Tita Sheryl", "Tita Angelique", "Tito Joel", "Tita Jonathan" };
+            return allHelpers;
         }
 
         [FunctionName("FryThoseSuckers")]
